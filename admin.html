@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Ice Universe</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #e0e6ed;
+      background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    /* Admin Container */
+    .admin-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .admin-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      padding: 2rem;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+      text-align: center;
+    }
+
+    .admin-title {
+      font-size: 2.5rem;
+      color: #4facfe;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
+    }
+
+    .admin-subtitle {
+      color: #a0aec0;
+      font-size: 1.1rem;
+    }
+
+    /* Login Form */
+    .login-container {
+      max-width: 400px;
+      margin: 5rem auto;
+      background: rgba(26, 26, 46, 0.8);
+      padding: 3rem;
+      border-radius: 20px;
+      border: 1px solid rgba(79, 172, 254, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .login-title {
+      text-align: center;
+      font-size: 2rem;
+      color: #4facfe;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #e0e6ed;
+      font-weight: bold;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid rgba(79, 172, 254, 0.3);
+      border-radius: 8px;
+      background: rgba(26, 26, 46, 0.6);
+      color: #e0e6ed;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #4facfe;
+      box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: #0c0c0c;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4);
+    }
+
+    /* Dashboard */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .dashboard-card {
+      background: rgba(26, 26, 46, 0.8);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      border-color: #4facfe;
+      box-shadow: 0 10px 30px rgba(79, 172, 254, 0.2);
+    }
+
+    .dashboard-icon {
+      font-size: 3rem;
+      color: #4facfe;
+      margin-bottom: 1rem;
+    }
+
+    .dashboard-title {
+      font-size: 1.5rem;
+      color: #e0e6ed;
+      margin-bottom: 0.5rem;
+    }
+
+    .dashboard-count {
+      color: #a0aec0;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    /* Main Content */
+    .main-content {
+      background: rgba(26, 26, 46, 0.8);
+      border-radius: 20px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      color: #4facfe;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
+      border-bottom: 1px solid rgba(79, 172, 254, 0.3);
+      padding-bottom: 1rem;
+    }
+
+    /* Blog Management */
+    .blog-form {
+      background: rgba(22, 33, 62, 0.6);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+      margin-bottom: 2rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .blog-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: #0c0c0c;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(79, 172, 254, 0.1);
+      color: #4facfe;
+      border: 1px solid #4facfe;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(79, 172, 254, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+    }
+
+    /* Blog List */
+    .blog-list {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .blog-item {
+      background: rgba(22, 33, 62, 0.6);
+      padding: 1.5rem;
+      border-radius: 10px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s;
+    }
+
+    .blog-item:hover {
+      border-color: #4facfe;
+      transform: translateX(5px);
+    }
+
+    .blog-info h3 {
+      color: #e0e6ed;
+      margin-bottom: 0.5rem;
+    }
+
+    .blog-info p {
+      color: #a0aec0;
+      font-size: 0.9rem;
+    }
+
+    .blog-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    /* Social Media Management */
+    .social-form {
+      background: rgba(22, 33, 62, 0.6);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(26, 26, 46, 0.6);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #4facfe, #00f2fe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0c0c0c;
+      font-weight: bold;
+    }
+
+    .social-input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 1px solid rgba(79, 172, 254, 0.3);
+      border-radius: 5px;
+      background: rgba(26, 26, 46, 0.6);
+      color: #e0e6ed;
+    }
+
+    /* Quick Links Management */
+    .links-form {
+      background: rgba(22, 33, 62, 0.6);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+    }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(26, 26, 46, 0.6);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+    }
+
+    .link-input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 1px solid rgba(79, 172, 254, 0.3);
+      border-radius: 5px;
+      background: rgba(26, 26, 46, 0.6);
+      color: #e0e6ed;
+    }
+
+    /* Photo Management */
+    .photo-upload {
+      background: rgba(22, 33, 62, 0.6);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+      text-align: center;
+    }
+
+    .upload-area {
+      border: 2px dashed rgba(79, 172, 254, 0.3);
+      border-radius: 10px;
+      padding: 3rem;
+      margin: 2rem 0;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .upload-area:hover {
+      border-color: #4facfe;
+      background: rgba(79, 172, 254, 0.05);
+    }
+
+    .upload-input {
+      display: none;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .photo-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .photo-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .photo-item:hover .photo-overlay {
+      opacity: 1;
+    }
+
+    .photo-delete {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Navigation Tabs */
+    .admin-nav {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+
+    .nav-tab {
+      padding: 1rem 1.5rem;
+      background: rgba(26, 26, 46, 0.6);
+      color: #a0aec0;
+      text-decoration: none;
+      border-radius: 8px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .nav-tab.active {
+      background: rgba(79, 172, 254, 0.1);
+      color: #4facfe;
+      border-color: #4facfe;
+    }
+
+    .nav-tab:hover {
+      color: #4facfe;
+      border-color: #4facfe;
+    }
+
+    /* Hidden by default */
+    .hidden {
+      display: none;
+    }
+
+    .content-editor-container {
+      position: relative;
+    }
+
+    .editor-toolbar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background: rgba(26, 26, 46, 0.6);
+      border-radius: 8px;
+      border: 1px solid rgba(79, 172, 254, 0.2);
+    }
+
+    .editor-toolbar button {
+      background: none;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+      color: #4facfe;
+    }
+
+    .editor-toolbar button:hover {
+      background: rgba(79, 172, 254, 0.1);
+      color: #00f2fe;
+    }
+
+    .drag-drop-zone {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(79, 172, 254, 0.05);
+      border: 2px dashed rgba(79, 172, 254, 0.3);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .drag-drop-zone.drag-over {
+      opacity: 1;
+      background: rgba(79, 172, 254, 0.1);
+      border-color: #4facfe;
+    }
+
+    .drop-zone-content {
+      text-align: center;
+      color: #a0aec0;
+    }
+
+    .content-textarea {
+      position: relative;
+      z-index: 1;
+      background: transparent;
+    }
+
+    /* Starry background animation */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Form (Initially Visible) -->
+  <div id="loginSection" class="login-container">
+    <h2 class="login-title">Admin Login</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label class="form-label" for="username">Username</label>
+        <input type="text" id="username" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input type="password" id="password" class="form-input" required>
+      </div>
+      <button type="submit" class="login-btn">Login to Admin Panel</button>
+    </form>
+  </div>
+
+  <!-- Admin Dashboard (Initially Hidden) -->
+  <div id="adminDashboard" class="admin-container hidden">
+    <!-- Header -->
+    <div class="admin-header">
+      <h1 class="admin-title">🚀 Ice Universe Admin Panel</h1>
+      <p class="admin-subtitle">Manage your cosmic blogging platform</p>
+    </div>
+
+    <!-- Dashboard Overview -->
+    <div class="dashboard">
+      <div class="dashboard-card" onclick="showSection('blogs')">
+        <div class="dashboard-icon">📝</div>
+        <div class="dashboard-title">Blog Posts</div>
+        <div class="dashboard-count" id="blogCount">0</div>
+      </div>
+      <div class="dashboard-card" onclick="showSection('social')">
+        <div class="dashboard-icon">🌐</div>
+        <div class="dashboard-title">Social Media</div>
+        <div class="dashboard-count" id="socialCount">3</div>
+      </div>
+      <div class="dashboard-card" onclick="showSection('links')">
+        <div class="dashboard-icon">🔗</div>
+        <div class="dashboard-title">Quick Links</div>
+        <div class="dashboard-count" id="linksCount">4</div>
+      </div>
+      <div class="dashboard-card" onclick="showSection('photos')">
+        <div class="dashboard-icon">📸</div>
+        <div class="dashboard-title">Photos</div>
+        <div class="dashboard-count" id="photosCount">0</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="admin-nav">
+      <a href="#" class="nav-tab active" onclick="showSection('blogs')">📝 Blog Management</a>
+      <a href="#" class="nav-tab" onclick="showSection('social')">🌐 Social Media</a>
+      <a href="#" class="nav-tab" onclick="showSection('links')">🔗 Quick Links</a>
+      <a href="#" class="nav-tab" onclick="showSection('photos')">📸 Photo Gallery</a>
+      <a href="#" class="nav-tab" onclick="showSection('seo')">🔍 SEO Management</a>
+      <a href="#" class="nav-tab" onclick="logout()">🚪 Logout</a>
+    </nav>
+
+    <!-- Blog Management Section -->
+    <div id="blogsSection" class="main-content">
+      <h2 class="section-title">📝 Blog Management</h2>
+
+      <!-- Add New Blog Form -->
+      <div class="blog-form">
+        <h3>Add New Blog Post</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input type="text" id="blogTitle" class="form-input" placeholder="Enter blog title">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <select id="blogCategory" class="form-input" style="flex: 1;">
+                <option value="Technology">Technology</option>
+                <option value="AI & Machine Learning">AI & Machine Learning</option>
+                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="Innovation">Innovation</option>
+                <option value="Cricket">Cricket</option>
+                <option value="Sports">Sports</option>
+                <option value="Casino & Gaming">Casino & Gaming</option>
+                <option value="Custom">Custom Category</option>
+              </select>
+              <input type="text" id="customCategory" class="form-input" placeholder="Enter custom category" style="display: none; width: 200px;" onkeyup="updateCustomCategory()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input type="date" id="blogDate" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Read Time</label>
+            <input type="text" id="blogReadTime" class="form-input" placeholder="e.g., 8 min read">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Excerpt</label>
+          <textarea id="blogExcerpt" class="form-input" rows="3" placeholder="Brief description of the blog post"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Content</label>
+          <div class="content-editor-container">
+            <div class="editor-toolbar">
+              <button type="button" onclick="insertImage()" title="Insert Image">🖼️</button>
+              <button type="button" onclick="formatText('bold')" title="Bold">𝐁</button>
+              <button type="button" onclick="formatText('italic')" title="Italic">𝐼</button>
+              <button type="button" onclick="insertLink()" title="Insert Link">🔗</button>
+            </div>
+            <div class="drag-drop-zone" id="contentDropZone" ondrop="handleContentDrop(event)" ondragover="allowDrop(event)">
+              <div class="drop-zone-content">
+                <div style="font-size: 3rem; color: #4facfe; margin-bottom: 1rem;">📷</div>
+                <p>Drag & Drop Images Here</p>
+                <p style="font-size: 0.9rem; opacity: 0.7;">Or use the 🖼️ button above</p>
+              </div>
+            </div>
+            <textarea id="blogContent" class="form-input content-textarea" rows="10" placeholder="Write your blog content here...&#10;&#10;Drag images into the content area or use the image button above."></textarea>
+          </div>
+        </div>
+        <div class="blog-actions">
+          <button class="btn btn-primary" onclick="addBlog()">➕ Add Blog Post</button>
+          <button class="btn btn-secondary" onclick="clearBlogForm()">🗑️ Clear Form</button>
+        </div>
+      </div>
+
+      <!-- Existing Blogs List -->
+      <div class="blog-list" id="blogList">
+        <!-- Blog items will be dynamically added here -->
+      </div>
+    </div>
+
+    <!-- Social Media Management Section -->
+    <div id="socialSection" class="main-content hidden">
+      <h2 class="section-title">🌐 Social Media Management</h2>
+      <div class="social-form">
+        <h3>Manage Social Media Links</h3>
+        <div class="social-grid">
+          <div class="social-item">
+            <div class="social-icon">📘</div>
+            <input type="url" id="facebookLink" class="social-input" placeholder="Facebook URL">
+          </div>
+          <div class="social-item">
+            <div class="social-icon">🐦</div>
+            <input type="url" id="twitterLink" class="social-input" placeholder="Twitter URL">
+          </div>
+          <div class="social-item">
+            <div class="social-icon">📷</div>
+            <input type="url" id="instagramLink" class="social-input" placeholder="Instagram URL">
+          </div>
+          <div class="social-item">
+            <div class="social-icon">💼</div>
+            <input type="url" id="linkedinLink" class="social-input" placeholder="LinkedIn URL">
+          </div>
+        </div>
+        <div class="blog-actions">
+          <button class="btn btn-primary" onclick="saveSocialLinks()">💾 Save Social Links</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Links Management Section -->
+    <div id="linksSection" class="main-content hidden">
+      <h2 class="section-title">🔗 Quick Links Management</h2>
+      <div class="links-form">
+        <h3>Manage Quick Links</h3>
+        <div class="links-grid">
+          <div class="link-item">
+            <label class="form-label">About Us:</label>
+            <input type="text" id="aboutLink" class="link-input" placeholder="About Us page URL">
+          </div>
+          <div class="link-item">
+            <label class="form-label">Contact:</label>
+            <input type="text" id="contactLink" class="link-input" placeholder="Contact page URL">
+          </div>
+          <div class="link-item">
+            <label class="form-label">Privacy Policy:</label>
+            <input type="text" id="privacyLink" class="link-input" placeholder="Privacy Policy URL">
+          </div>
+          <div class="link-item">
+            <label class="form-label">Terms of Service:</label>
+            <input type="text" id="termsLink" class="link-input" placeholder="Terms of Service URL">
+          </div>
+        </div>
+        <div class="blog-actions">
+          <button class="btn btn-primary" onclick="saveQuickLinks()">💾 Save Quick Links</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo Management Section -->
+    <div id="photosSection" class="main-content hidden">
+      <h2 class="section-title">📸 Photo Gallery Management</h2>
+      <div class="photo-upload">
+        <h3>Upload New Photos</h3>
+        <div class="upload-area" onclick="document.getElementById('photoUpload').click()">
+          <div style="font-size: 3rem; color: #4facfe; margin-bottom: 1rem;">📸</div>
+          <p>Click here to upload photos</p>
+          <p style="font-size: 0.9rem; opacity: 0.7;">Supported formats: JPG, PNG, GIF</p>
+        </div>
+        <input type="file" id="photoUpload" class="upload-input" accept="image/*" multiple onchange="handlePhotoUpload(event)">
+      </div>
+
+      <div class="photo-grid" id="photoGrid">
+        <!-- Photos will be dynamically added here -->
+      </div>
+    </div>
+
+    <!-- SEO Management Section -->
+    <div id="seoSection" class="main-content hidden">
+      <h2 class="section-title">🔍 SEO Management</h2>
+
+      <!-- Site-wide SEO Settings -->
+      <div class="seo-form">
+        <h3>Site-wide SEO Settings</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Site Title</label>
+            <input type="text" id="siteTitle" class="form-input" placeholder="Ice Universe - Tech & Innovation Blog">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Meta Description</label>
+            <textarea id="siteDescription" class="form-input" rows="3" placeholder="Exploring the vast cosmos of technology, sports, and innovation. Journey through the digital universe where ideas become stars and knowledge illuminates the darkness."></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Keywords (comma-separated)</label>
+            <input type="text" id="siteKeywords" class="form-input" placeholder="technology, innovation, AI, cricket, sports, gaming, blog">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Canonical URL</label>
+            <input type="url" id="canonicalUrl" class="form-input" placeholder="https://yourwebsite.com/">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Author Name</label>
+            <input type="text" id="siteAuthor" class="form-input" placeholder="Ice Universe Team">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Site Language</label>
+            <select id="siteLanguage" class="form-input">
+              <option value="en">English</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+              <option value="hi">Hindi</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Open Graph Tags -->
+      <div class="seo-form">
+        <h3>Open Graph Tags (Facebook, LinkedIn, etc.)</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">OG Title</label>
+            <input type="text" id="ogTitle" class="form-input" placeholder="Ice Universe - Tech & Innovation Blog">
+          </div>
+          <div class="form-group">
+            <label class="form-label">OG Description</label>
+            <textarea id="ogDescription" class="form-input" rows="3" placeholder="Exploring the vast cosmos of technology, sports, and innovation..."></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">OG Image URL</label>
+            <input type="url" id="ogImage" class="form-input" placeholder="https://yourwebsite.com/images/og-image.jpg">
+          </div>
+          <div class="form-group">
+            <label class="form-label">OG URL</label>
+            <input type="url" id="ogUrl" class="form-input" placeholder="https://yourwebsite.com/">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">OG Type</label>
+            <select id="ogType" class="form-input">
+              <option value="website">Website</option>
+              <option value="article">Article</option>
+              <option value="blog">Blog</option>
+              <option value="profile">Profile</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">OG Site Name</label>
+            <input type="text" id="ogSiteName" class="form-input" placeholder="Ice Universe">
+          </div>
+        </div>
+      </div>
+
+      <!-- Twitter Card Tags -->
+      <div class="seo-form">
+        <h3>Twitter Card Tags</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Twitter Card Type</label>
+            <select id="twitterCard" class="form-input">
+              <option value="summary">Summary</option>
+              <option value="summary_large_image">Summary Large Image</option>
+              <option value="app">App</option>
+              <option value="player">Player</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Twitter Title</label>
+            <input type="text" id="twitterTitle" class="form-input" placeholder="Ice Universe - Tech & Innovation Blog">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Twitter Description</label>
+            <textarea id="twitterDescription" class="form-input" rows="3" placeholder="Exploring the vast cosmos of technology, sports, and innovation..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Twitter Image</label>
+            <input type="url" id="twitterImage" class="form-input" placeholder="https://yourwebsite.com/images/twitter-image.jpg">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Twitter Site Handle</label>
+            <input type="text" id="twitterSite" class="form-input" placeholder="@yourtwitterhandle">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Twitter Creator Handle</label>
+            <input type="text" id="twitterCreator" class="form-input" placeholder="@creatorhandle">
+          </div>
+        </div>
+      </div>
+
+      <!-- Schema Markup -->
+      <div class="seo-form">
+        <h3>Schema Markup (JSON-LD)</h3>
+        <div class="form-group">
+          <label class="form-label">Organization Schema</label>
+          <textarea id="schemaOrg" class="form-input" rows="8" placeholder='{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Ice Universe",
+  "url": "https://yourwebsite.com",
+  "logo": "https://yourwebsite.com/images/logo.png",
+  "description": "Technology and innovation blog",
+  "sameAs": [
+    "https://twitter.com/yourhandle",
+    "https://linkedin.com/company/yourcompany"
+  ]
+}'></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Website Schema</label>
+          <textarea id="schemaWebsite" class="form-input" rows="6" placeholder='{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Ice Universe",
+  "url": "https://yourwebsite.com",
+  "description": "Exploring technology, sports, and innovation",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ice Universe"
+  }
+}'></textarea>
+        </div>
+      </div>
+
+      <!-- SEO Tools -->
+      <div class="seo-form">
+        <h3>SEO Tools & Files</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Robots.txt Content</label>
+            <textarea id="robotsTxt" class="form-input" rows="6" placeholder="User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /private/
+
+Sitemap: https://yourwebsite.com/sitemap.xml"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sitemap URL</label>
+            <input type="url" id="sitemapUrl" class="form-input" placeholder="https://yourwebsite.com/sitemap.xml">
+          </div>
+        </div>
+        <div class="blog-actions">
+          <button class="btn btn-primary" onclick="generateMetaTags()">🏷️ Generate Meta Tags</button>
+          <button class="btn btn-secondary" onclick="previewSEO()">👁️ Preview SEO</button>
+          <button class="btn btn-primary" onclick="saveSEOSettings()">💾 Save SEO Settings</button>
+        </div>
+      </div>
+
+      <!-- SEO Preview -->
+      <div class="seo-form" id="seoPreview" style="display: none;">
+        <h3>SEO Preview</h3>
+        <div class="seo-preview-box">
+          <h4>Search Result Preview:</h4>
+          <div class="search-preview">
+            <div class="preview-title" id="previewTitle"></div>
+            <div class="preview-url" id="previewUrl"></div>
+            <div class="preview-description" id="previewDescription"></div>
+          </div>
+        </div>
+        <div class="seo-preview-box">
+          <h4>Generated Meta Tags:</h4>
+          <pre id="metaTagsPreview"></pre>
+        </div>
+        <div class="seo-preview-box">
+          <h4>Social Media Preview:</h4>
+          <div class="social-preview" id="socialPreview"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Starry Background -->
+  <div class="stars" id="stars"></div>
+
+  <script>
+    // Sample data storage (using localStorage)
+    let blogs = JSON.parse(localStorage.getItem('iceUniverseBlogs')) || [];
+    let socialLinks = JSON.parse(localStorage.getItem('iceUniverseSocial')) || {
+      facebook: '#',
+      twitter: '#',
+      instagram: '#',
+      linkedin: '#'
+    };
+    let quickLinks = JSON.parse(localStorage.getItem('iceUniverseLinks')) || {
+      about: '#',
+      contact: '#',
+      privacy: '#',
+      terms: '#'
+    };
+    let photos = JSON.parse(localStorage.getItem('iceUniversePhotos')) || [];
+    let seoSettings = JSON.parse(localStorage.getItem('iceUniverseSEO')) || {
+      siteTitle: 'Ice Universe - Tech & Innovation Blog',
+      siteDescription: 'Exploring the vast cosmos of technology, sports, and innovation. Journey through the digital universe where ideas become stars and knowledge illuminates the darkness.',
+      siteKeywords: 'technology, innovation, AI, cricket, sports, gaming, blog',
+      canonicalUrl: '',
+      siteAuthor: 'Ice Universe Team',
+      siteLanguage: 'en',
+      ogTitle: 'Ice Universe - Tech & Innovation Blog',
+      ogDescription: 'Exploring the vast cosmos of technology, sports, and innovation...',
+      ogImage: '',
+      ogUrl: '',
+      ogType: 'website',
+      ogSiteName: 'Ice Universe',
+      twitterCard: 'summary_large_image',
+      twitterTitle: 'Ice Universe - Tech & Innovation Blog',
+      twitterDescription: 'Exploring the vast cosmos of technology, sports, and innovation...',
+      twitterImage: '',
+      twitterSite: '',
+      twitterCreator: '',
+      schemaOrg: '',
+      schemaWebsite: '',
+      robotsTxt: 'User-agent: *\nAllow: /\nDisallow: /admin.html\nDisallow: /private/\n\nSitemap: https://yourwebsite.com/sitemap.xml',
+      sitemapUrl: ''
+    };
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      createStars();
+      updateDashboard();
+      loadSocialLinks();
+      loadQuickLinks();
+      loadPhotos();
+    });
+
+    // Login functionality
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Simple authentication (in production, use proper backend authentication)
+      if (username === 'admin' && password === 'iceuniverse2025') {
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('adminDashboard').classList.remove('hidden');
+        showSection('blogs');
+      } else {
+        alert('Invalid credentials! Use admin/iceuniverse2025');
+      }
+    });
+
+    // Show specific section
+    function showSection(section) {
+      // Hide all sections
+      document.getElementById('blogsSection').classList.add('hidden');
+      document.getElementById('socialSection').classList.add('hidden');
+      document.getElementById('linksSection').classList.add('hidden');
+      document.getElementById('photosSection').classList.add('hidden');
+      document.getElementById('seoSection').classList.add('hidden');
+
+      // Update nav tabs
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // Show selected section
+      document.getElementById(section + 'Section').classList.remove('hidden');
+      event.target.classList.add('active');
+
+      // Load section data
+      if (section === 'blogs') {
+        loadBlogs();
+      }
+      if (section === 'seo') {
+        loadSEOSettings();
+      }
+    }
+
+    // Blog Management Functions
+    function addBlog() {
+      const title = document.getElementById('blogTitle').value;
+      const category = getSelectedCategory();
+      const date = document.getElementById('blogDate').value;
+      const readTime = document.getElementById('blogReadTime').value;
+      const excerpt = document.getElementById('blogExcerpt').value;
+      const content = document.getElementById('blogContent').value;
+
+      if (!title || !content) {
+        alert('Please fill in all required fields!');
+        return;
+      }
+
+      const newBlog = {
+        id: Date.now(),
+        title,
+        category,
+        date: date || new Date().toISOString().split('T')[0],
+        readTime,
+        excerpt,
+        content,
+        createdAt: new Date().toISOString()
+      };
+
+      blogs.push(newBlog);
+      localStorage.setItem('iceUniverseBlogs', JSON.stringify(blogs));
+      updateDashboard();
+      loadBlogs();
+      clearBlogForm();
+      alert('Blog post added successfully!');
+
+      // Force refresh of main site if it's open in another tab
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'iceUniverseBlogs',
+        newValue: JSON.stringify(blogs),
+        storageArea: localStorage
+      }));
+    }
+
+    function loadBlogs() {
+      const blogList = document.getElementById('blogList');
+      blogList.innerHTML = '';
+
+      if (blogs.length === 0) {
+        blogList.innerHTML = '<p style="text-align: center; color: #a0aec0; padding: 2rem;">No blog posts yet. Add your first post above!</p>';
+        return;
+      }
+
+      blogs.forEach(blog => {
+        const blogItem = document.createElement('div');
+        blogItem.className = 'blog-item';
+        blogItem.innerHTML = `
+          <div class="blog-info">
+            <h3>${blog.title}</h3>
+            <p><strong>${blog.category}</strong> • ${blog.date} • ${blog.readTime || 'N/A'}</p>
+            <p>${blog.excerpt ? blog.excerpt.substring(0, 100) + '...' : 'No excerpt'}</p>
+          </div>
+          <div class="blog-actions">
+            <button class="btn btn-sm btn-secondary" onclick="editBlog(${blog.id})">✏️ Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteBlog(${blog.id})">🗑️ Delete</button>
+          </div>
+        `;
+        blogList.appendChild(blogItem);
+      });
+    }
+
+    function editBlog(id) {
+      const blog = blogs.find(b => b.id === id);
+      if (blog) {
+        document.getElementById('blogTitle').value = blog.title;
+        document.getElementById('blogCategory').value = blog.category;
+        document.getElementById('blogDate').value = blog.date;
+        document.getElementById('blogReadTime').value = blog.readTime;
+        document.getElementById('blogExcerpt').value = blog.excerpt;
+        document.getElementById('blogContent').value = blog.content;
+
+        // Remove old blog and scroll to form
+        deleteBlog(id);
+        document.getElementById('blogTitle').scrollIntoView();
+      }
+    }
+
+    function deleteBlog(id) {
+      blogs = blogs.filter(b => b.id !== id);
+      localStorage.setItem('iceUniverseBlogs', JSON.stringify(blogs));
+      updateDashboard();
+      loadBlogs();
+    }
+
+    // Update custom category selection
+    function updateCustomCategory() {
+      const categorySelect = document.getElementById('blogCategory');
+      const customInput = document.getElementById('customCategory');
+
+      if (categorySelect.value === 'Custom') {
+        customInput.style.display = 'block';
+        customInput.focus();
+      } else {
+        customInput.style.display = 'none';
+        customInput.value = '';
+      }
+    }
+
+    // Get the actual category value (handles custom categories)
+    function getSelectedCategory() {
+      const categorySelect = document.getElementById('blogCategory');
+      const customInput = document.getElementById('customCategory');
+
+      if (categorySelect.value === 'Custom' && customInput.value.trim()) {
+        return customInput.value.trim();
+      }
+      return categorySelect.value;
+    }
+
+    function clearBlogForm() {
+      document.getElementById('blogTitle').value = '';
+      document.getElementById('blogCategory').value = 'Technology';
+      document.getElementById('blogDate').value = '';
+      document.getElementById('blogReadTime').value = '';
+      document.getElementById('blogExcerpt').value = '';
+      document.getElementById('blogContent').value = '';
+
+      // Reset custom category
+      document.getElementById('customCategory').value = '';
+      document.getElementById('customCategory').style.display = 'none';
+    }
+
+    // Drag and Drop Image Functions
+    function allowDrop(ev) {
+      ev.preventDefault();
+      const dropZone = document.getElementById('contentDropZone');
+      dropZone.classList.add('drag-over');
+    }
+
+    function handleContentDrop(ev) {
+      ev.preventDefault();
+      const dropZone = document.getElementById('contentDropZone');
+      dropZone.classList.remove('drag-over');
+
+      const files = ev.dataTransfer.files;
+      if (files.length > 0) {
+        handleImageDrop(files[0]);
+      }
+    }
+
+    function handleImageDrop(file) {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imageUrl = e.target.result;
+          const contentTextarea = document.getElementById('blogContent');
+          const cursorPos = contentTextarea.selectionStart;
+          const textBefore = contentTextarea.value.substring(0, cursorPos);
+          const textAfter = contentTextarea.value.substring(cursorPos);
+
+          // Insert image markdown at cursor position
+          const imageMarkdown = `\n![Image](${imageUrl})\n`;
+          contentTextarea.value = textBefore + imageMarkdown + textAfter;
+
+          // Focus back to textarea
+          contentTextarea.focus();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function insertImage() {
+      // Create a hidden file input and trigger it
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*';
+      fileInput.onchange = function(e) {
+        if (e.target.files[0]) {
+          handleImageDrop(e.target.files[0]);
+        }
+      };
+      fileInput.click();
+    }
+
+    function formatText(format) {
+      const textarea = document.getElementById('blogContent');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = textarea.value.substring(start, end);
+
+      let formattedText = '';
+      switch(format) {
+        case 'bold':
+          formattedText = `**${selectedText}**`;
+          break;
+        case 'italic':
+          formattedText = `*${selectedText}*`;
+          break;
+      }
+
+      const beforeText = textarea.value.substring(0, start);
+      const afterText = textarea.value.substring(end);
+      textarea.value = beforeText + formattedText + afterText;
+
+      // Reset cursor position
+      textarea.focus();
+      textarea.setSelectionRange(start + formattedText.length, start + formattedText.length);
+    }
+
+    function insertLink() {
+      const url = prompt('Enter URL:');
+      if (url) {
+        const textarea = document.getElementById('blogContent');
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selectedText = textarea.value.substring(start, end) || 'Link Text';
+
+        const linkMarkdown = `[${selectedText}](${url})`;
+        const beforeText = textarea.value.substring(0, start);
+        const afterText = textarea.value.substring(end);
+
+        textarea.value = beforeText + linkMarkdown + afterText;
+        textarea.focus();
+      }
+    }
+
+    // Social Media Management
+    function saveSocialLinks() {
+      socialLinks = {
+        facebook: document.getElementById('facebookLink').value,
+        twitter: document.getElementById('twitterLink').value,
+        instagram: document.getElementById('instagramLink').value,
+        linkedin: document.getElementById('linkedinLink').value
+      };
+      localStorage.setItem('iceUniverseSocial', JSON.stringify(socialLinks));
+      alert('Social media links saved!');
+
+      // Force refresh of main site
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'iceUniverseSocial',
+        newValue: JSON.stringify(socialLinks),
+        storageArea: localStorage
+      }));
+    }
+
+    function loadSocialLinks() {
+      document.getElementById('facebookLink').value = socialLinks.facebook || '';
+      document.getElementById('twitterLink').value = socialLinks.twitter || '';
+      document.getElementById('instagramLink').value = socialLinks.instagram || '';
+      document.getElementById('linkedinLink').value = socialLinks.linkedin || '';
+    }
+
+    // Quick Links Management
+    function saveQuickLinks() {
+      quickLinks = {
+        about: document.getElementById('aboutLink').value,
+        contact: document.getElementById('contactLink').value,
+        privacy: document.getElementById('privacyLink').value,
+        terms: document.getElementById('termsLink').value
+      };
+      localStorage.setItem('iceUniverseLinks', JSON.stringify(quickLinks));
+      alert('Quick links saved!');
+
+      // Force refresh of main site
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'iceUniverseLinks',
+        newValue: JSON.stringify(quickLinks),
+        storageArea: localStorage
+      }));
+    }
+
+    function loadQuickLinks() {
+      document.getElementById('aboutLink').value = quickLinks.about || '';
+      document.getElementById('contactLink').value = quickLinks.contact || '';
+      document.getElementById('privacyLink').value = quickLinks.privacy || '';
+      document.getElementById('termsLink').value = quickLinks.terms || '';
+    }
+
+    // Photo Management
+    function handlePhotoUpload(event) {
+      const files = event.target.files;
+      for (let file of files) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const photo = {
+            id: Date.now() + Math.random(),
+            name: file.name,
+            url: e.target.result,
+            uploadedAt: new Date().toISOString()
+          };
+          photos.push(photo);
+          localStorage.setItem('iceUniversePhotos', JSON.stringify(photos));
+          loadPhotos();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function loadPhotos() {
+      const photoGrid = document.getElementById('photoGrid');
+      photoGrid.innerHTML = '';
+
+      if (photos.length === 0) {
+        photoGrid.innerHTML = '<p style="text-align: center; color: #a0aec0; padding: 2rem; grid-column: 1 / -1;">No photos uploaded yet.</p>';
+        return;
+      }
+
+      photos.forEach(photo => {
+        const photoItem = document.createElement('div');
+        photoItem.className = 'photo-item';
+        photoItem.innerHTML = `
+          <img src="${photo.url}" alt="${photo.name}">
+          <div class="photo-overlay">
+            <button class="photo-delete" onclick="deletePhoto('${photo.id}')">🗑️ Delete</button>
+          </div>
+        `;
+        photoGrid.appendChild(photoItem);
+      });
+
+      updateDashboard();
+    }
+
+    function deletePhoto(id) {
+      photos = photos.filter(p => p.id !== id);
+      localStorage.setItem('iceUniversePhotos', JSON.stringify(photos));
+      loadPhotos();
+    }
+
+    // SEO Management Functions
+    function loadSEOSettings() {
+      document.getElementById('siteTitle').value = seoSettings.siteTitle || '';
+      document.getElementById('siteDescription').value = seoSettings.siteDescription || '';
+      document.getElementById('siteKeywords').value = seoSettings.siteKeywords || '';
+      document.getElementById('canonicalUrl').value = seoSettings.canonicalUrl || '';
+      document.getElementById('siteAuthor').value = seoSettings.siteAuthor || '';
+      document.getElementById('siteLanguage').value = seoSettings.siteLanguage || 'en';
+
+      document.getElementById('ogTitle').value = seoSettings.ogTitle || '';
+      document.getElementById('ogDescription').value = seoSettings.ogDescription || '';
+      document.getElementById('ogImage').value = seoSettings.ogImage || '';
+      document.getElementById('ogUrl').value = seoSettings.ogUrl || '';
+      document.getElementById('ogType').value = seoSettings.ogType || 'website';
+      document.getElementById('ogSiteName').value = seoSettings.ogSiteName || '';
+
+      document.getElementById('twitterCard').value = seoSettings.twitterCard || 'summary_large_image';
+      document.getElementById('twitterTitle').value = seoSettings.twitterTitle || '';
+      document.getElementById('twitterDescription').value = seoSettings.twitterDescription || '';
+      document.getElementById('twitterImage').value = seoSettings.twitterImage || '';
+      document.getElementById('twitterSite').value = seoSettings.twitterSite || '';
+      document.getElementById('twitterCreator').value = seoSettings.twitterCreator || '';
+
+      document.getElementById('schemaOrg').value = seoSettings.schemaOrg || '';
+      document.getElementById('schemaWebsite').value = seoSettings.schemaWebsite || '';
+      document.getElementById('robotsTxt').value = seoSettings.robotsTxt || '';
+      document.getElementById('sitemapUrl').value = seoSettings.sitemapUrl || '';
+    }
+
+    function saveSEOSettings() {
+      seoSettings = {
+        siteTitle: document.getElementById('siteTitle').value,
+        siteDescription: document.getElementById('siteDescription').value,
+        siteKeywords: document.getElementById('siteKeywords').value,
+        canonicalUrl: document.getElementById('canonicalUrl').value,
+        siteAuthor: document.getElementById('siteAuthor').value,
+        siteLanguage: document.getElementById('siteLanguage').value,
+        ogTitle: document.getElementById('ogTitle').value,
+        ogDescription: document.getElementById('ogDescription').value,
+        ogImage: document.getElementById('ogImage').value,
+        ogUrl: document.getElementById('ogUrl').value,
+        ogType: document.getElementById('ogType').value,
+        ogSiteName: document.getElementById('ogSiteName').value,
+        twitterCard: document.getElementById('twitterCard').value,
+        twitterTitle: document.getElementById('twitterTitle').value,
+        twitterDescription: document.getElementById('twitterDescription').value,
+        twitterImage: document.getElementById('twitterImage').value,
+        twitterSite: document.getElementById('twitterSite').value,
+        twitterCreator: document.getElementById('twitterCreator').value,
+        schemaOrg: document.getElementById('schemaOrg').value,
+        schemaWebsite: document.getElementById('schemaWebsite').value,
+        robotsTxt: document.getElementById('robotsTxt').value,
+        sitemapUrl: document.getElementById('sitemapUrl').value
+      };
+
+      localStorage.setItem('iceUniverseSEO', JSON.stringify(seoSettings));
+      alert('SEO settings saved successfully!');
+    }
+
+    function generateMetaTags() {
+      const siteTitle = document.getElementById('siteTitle').value || 'Ice Universe';
+      const siteDescription = document.getElementById('siteDescription').value || '';
+      const siteKeywords = document.getElementById('siteKeywords').value || '';
+      const canonicalUrl = document.getElementById('canonicalUrl').value || '';
+
+      let metaTags = `<!-- Primary Meta Tags -->\n`;
+      metaTags += `<title>${siteTitle}</title>\n`;
+      metaTags += `<meta name="title" content="${siteTitle}">\n`;
+      metaTags += `<meta name="description" content="${siteDescription}">\n`;
+
+      if (siteKeywords) {
+        metaTags += `<meta name="keywords" content="${siteKeywords}">\n`;
+      }
+
+      if (canonicalUrl) {
+        metaTags += `<link rel="canonical" href="${canonicalUrl}">\n`;
+      }
+
+      metaTags += `<meta name="language" content="${document.getElementById('siteLanguage').value}">\n`;
+      metaTags += `<meta name="author" content="${document.getElementById('siteAuthor').value}">\n`;
+      metaTags += `<meta name="robots" content="index, follow">\n`;
+
+      // Open Graph Tags
+      metaTags += `\n<!-- Open Graph / Facebook -->\n`;
+      metaTags += `<meta property="og:type" content="${document.getElementById('ogType').value}">\n`;
+      metaTags += `<meta property="og:url" content="${document.getElementById('ogUrl').value || canonicalUrl}">\n`;
+      metaTags += `<meta property="og:title" content="${document.getElementById('ogTitle').value || siteTitle}">\n`;
+      metaTags += `<meta property="og:description" content="${document.getElementById('ogDescription').value || siteDescription}">\n`;
+      metaTags += `<meta property="og:image" content="${document.getElementById('ogImage').value}">\n`;
+      metaTags += `<meta property="og:site_name" content="${document.getElementById('ogSiteName').value}">\n`;
+
+      // Twitter Card Tags
+      metaTags += `\n<!-- Twitter -->\n`;
+      metaTags += `<meta property="twitter:card" content="${document.getElementById('twitterCard').value}">\n`;
+      metaTags += `<meta property="twitter:url" content="${document.getElementById('ogUrl').value || canonicalUrl}">\n`;
+      metaTags += `<meta property="twitter:title" content="${document.getElementById('twitterTitle').value || siteTitle}">\n`;
+      metaTags += `<meta property="twitter:description" content="${document.getElementById('twitterDescription').value || siteDescription}">\n`;
+      metaTags += `<meta property="twitter:image" content="${document.getElementById('twitterImage').value}">\n`;
+
+      if (document.getElementById('twitterSite').value) {
+        metaTags += `<meta property="twitter:site" content="${document.getElementById('twitterSite').value}">\n`;
+      }
+
+      if (document.getElementById('twitterCreator').value) {
+        metaTags += `<meta property="twitter:creator" content="${document.getElementById('twitterCreator').value}">\n`;
+      }
+
+      document.getElementById('metaTagsPreview').textContent = metaTags;
+    }
+
+    function previewSEO() {
+      const siteTitle = document.getElementById('siteTitle').value || 'Ice Universe - Tech & Innovation Blog';
+      const siteDescription = document.getElementById('siteDescription').value || 'Exploring the vast cosmos of technology, sports, and innovation...';
+      const canonicalUrl = document.getElementById('canonicalUrl').value || 'https://yourwebsite.com/';
+
+      document.getElementById('previewTitle').textContent = siteTitle;
+      document.getElementById('previewUrl').textContent = canonicalUrl;
+      document.getElementById('previewDescription').textContent = siteDescription;
+
+      const ogImage = document.getElementById('ogImage').value;
+      let socialPreview = '';
+      if (ogImage) {
+        socialPreview = `<img src="${ogImage}" alt="Social Preview" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">`;
+      } else {
+        socialPreview = '<div style="width: 100%; height: 200px; background: linear-gradient(45deg, #4facfe, #00f2fe); display: flex; align-items: center; justify-content: center; color: #0c0c0c; font-size: 1.5rem; border-radius: 8px;">🚀 Ice Universe</div>';
+      }
+
+      document.getElementById('socialPreview').innerHTML = `
+        <div style="border: 1px solid #4facfe; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+          <h4>Facebook/LinkedIn Preview:</h4>
+          ${socialPreview}
+          <h3 style="margin: 0.5rem 0; color: #4facfe;">${siteTitle}</h3>
+          <p style="margin: 0; color: #a0aec0;">${siteDescription}</p>
+        </div>
+      `;
+
+      document.getElementById('seoPreview').style.display = 'block';
+      generateMetaTags();
+    }
+
+    // Dashboard Updates
+    function updateDashboard() {
+      document.getElementById('blogCount').textContent = blogs.length;
+      document.getElementById('socialCount').textContent = '3';
+      document.getElementById('linksCount').textContent = '4';
+      document.getElementById('photosCount').textContent = photos.length;
+    }
+
+    // Logout
+    function logout() {
+      document.getElementById('loginSection').classList.remove('hidden');
+      document.getElementById('adminDashboard').classList.add('hidden');
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+    }
+
+    // Create animated stars
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      const numberOfStars = 150;
+
+      for (let i = 0; i < numberOfStars; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+
+        const size = Math.random() * 3 + 1;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+
+        star.style.animationDelay = Math.random() * 2 + 's';
+
+        starsContainer.appendChild(star);
+      }
+    }
+
+    // Export data (for backup)
+    function exportData() {
+      const data = {
+        blogs,
+        socialLinks,
+        quickLinks,
+        photos,
+        exportedAt: new Date().toISOString()
+      };
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ice-universe-backup.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Add debug button to admin header
+    document.addEventListener('DOMContentLoaded', function() {
+      const adminHeader = document.querySelector('.admin-header');
+      const debugBtn = document.createElement('button');
+      debugBtn.className = 'btn btn-secondary';
+      debugBtn.textContent = '🐛 Debug Data';
+      debugBtn.onclick = function() {
+        const blogs = JSON.parse(localStorage.getItem('iceUniverseBlogs')) || [];
+        console.log('Current blog data:', blogs);
+
+        // Count by category
+        const categoryCounts = {};
+        blogs.forEach(blog => {
+          const category = blog.category;
+          if (categoryCounts[category]) {
+            categoryCounts[category]++;
+          } else {
+            categoryCounts[category] = 1;
+          }
+        });
+
+        alert(`Admin Debug:\nFound ${blogs.length} blog posts\nCategories: ${Object.keys(categoryCounts).join(', ')}`);
+      };
+      debugBtn.style.marginTop = '1rem';
+      adminHeader.appendChild(debugBtn);
+
+      // Add clear data button
+      const clearBtn = document.createElement('button');
+      clearBtn.className = 'btn btn-danger';
+      clearBtn.textContent = '🗑️ Clear All Data';
+      clearBtn.onclick = function() {
+        if (confirm('This will clear all blog posts, social links, and other data. Are you sure?')) {
+          localStorage.removeItem('iceUniverseBlogs');
+          localStorage.removeItem('iceUniverseSocial');
+          localStorage.removeItem('iceUniverseLinks');
+          localStorage.removeItem('iceUniverseSEO');
+          localStorage.removeItem('iceUniversePhotos');
+          alert('All data cleared! Please refresh both admin and main site.');
+          location.reload();
+        }
+      };
+      clearBtn.style.marginTop = '1rem';
+      clearBtn.style.marginLeft = '1rem';
+      adminHeader.appendChild(clearBtn);
+    });
+  </script>
+</body>
+</html>
